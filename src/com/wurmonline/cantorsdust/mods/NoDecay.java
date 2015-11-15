@@ -83,7 +83,7 @@ public class NoDecay implements WurmMod, Configurable, PreInitable {
             CtMethod method = ex.getDeclaredMethod("createItemTemplate");
             //MethodInfo methodInfo = method.getMethodInfo();
             //method.insertBefore("return true;");
-            method.insertBefore("{ if (!($1 == 74 || $1 == 419 || $1 == 420 || $1 == 464 || $1 == 465 || $1 == 466 || $1 == 766 || $1 == 767 )) {" +
+            method.insertBefore("{ if (!($1 == 74 || $1 == 272 || $1 == 419 || $1 == 420 || $1 == 464 || $1 == 465 || $1 == 466 || $1 == 766 || $1 == 767 )) {" +
                     " $14 = 9223372036854775807L; } }");
             //methodInfo.rebuildStackMapIf6(classPool, cf);
             //methodInfo.rebuildStackMap(classPool);
