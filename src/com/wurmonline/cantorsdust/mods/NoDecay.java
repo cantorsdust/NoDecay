@@ -6,11 +6,7 @@
 package com.wurmonline.cantorsdust.mods;
 
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
-import javassist.NotFoundException;
+import javassist.*;
 import javassist.bytecode.*;
 
 import java.io.IOException;
@@ -77,14 +73,15 @@ public class NoDecay implements WurmMod, Configurable, PreInitable {
     private void NoItemDecayFunction() {
         try {
             ClassPool classPool = HookManager.getInstance().getClassPool();
-            CtClass ex = HookManager.getInstance().getClassPool().get("com.wurmonline.server.items.ItemTemplateCreator");
+            CtClass ex = HookManager.getInstance().getClassPool().get("com.wurmonline.server.items.Item");
             ClassFile cf = ex.getClassFile();
-            //CtClass[] parameters = new CtClass[]{CtPrimitiveType.intType, CtPrimitiveType.intType};
-            CtMethod method = ex.getDeclaredMethod("createItemTemplate");
+            //CtClass[] parameters = new CtClass[]{CtPrimitiveType.intType, CtPrimitiveType name, String plural, String itemDescriptionSuperb, String itemDescriptionNormal, String itemDescriptionBad, String itemDescriptionRotten, String itemDescriptionLong, short[] itemTypes, short imageNumber, short behaviourType, int combatDamage, long decayTime, int centimetersX, int centimetersY, int centimetersZ, int primarySkill, byte[] bodySpaces, String modelName, float difficulty, int weightGrams, byte material};
+            CtMethod method = ex.getDeclaredMethod("getDecayTime");
             //MethodInfo methodInfo = method.getMethodInfo();
             //method.insertBefore("return true;");
-            method.insertBefore("{ if (!($1 == 74 || $1 == 272 || $1 == 419 || $1 == 420 || $1 == 464 || $1 == 465 || $1 == 466 || $1 == 766 || $1 == 767 )) {" +
-                    " $14 = 9223372036854775807L; } }");
+            method.setBody("{ int tid = this.getTemplateId();  if (!(tid == 74 || tid == 272 || tid == 419 || tid == 420 || tid == 464 || tid == 465 || tid == 466 || tid == 766 || tid == 767 )) {" +
+                    " return 9223372036854775807L; }" +
+                    "else { return this.template.getDecayTime(); } }");
             //methodInfo.rebuildStackMapIf6(classPool, cf);
             //methodInfo.rebuildStackMap(classPool);
             method = null;
