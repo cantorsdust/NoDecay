@@ -166,6 +166,8 @@ public class NoDecay implements WurmMod, Configurable, PreInitable {
     }
 */
 
+
+    /*
     public static long getAdjustedDecayTime(ItemTemplate itemTemplate) {
         long decayTime = itemTemplate.getDecayTime();
         int templateId = itemTemplate.getTemplateId();
@@ -174,6 +176,23 @@ public class NoDecay implements WurmMod, Configurable, PreInitable {
         }
         return decayTime;
     }
+    */
+
+
+
+
+
+    public static long getAdjustedDecayTime(ItemTemplate itemTemplate, long dt) {
+        long value = dt;
+        int templateId = itemTemplate.getTemplateId();
+        if (!(blacklist.contains(Integer.valueOf(templateId)))) {
+            value = 9223372036854775807L;
+        }
+        return value;
+    }
+
+
+
     /*
     private void NoItemDecayFunction() {
         try {
@@ -210,7 +229,9 @@ public class NoDecay implements WurmMod, Configurable, PreInitable {
             //method.setBody("{ int tid = this.getTemplateId();  if (!(tid == 272 || tid == 419 || tid == 420 || tid == 464 || tid == 465 || tid == 466 || tid == 766 || tid == 767 )) {" +
             //        " return 9223372036854775807L; }" +
             //        "else { return this.template.getDecayTime(); } }");
-            method.setBody("{ return com.wurmonline.cantorsdust.mods.NoDecay.getAdjustedDecayTime(this);}");
+            //method.setBody("{ int d = this.decayTime;\n " +
+            //        "return com.wurmonline.cantorsdust.mods.NoDecay.getAdjustedDecayTime(this,d);}");
+            method.setBody("{ long d = this.decayTime; \n return com.wurmonline.cantorsdust.mods.NoDecay.getAdjustedDecayTime(this, d);}");
             //methodInfo.rebuildStackMapIf6(classPool, cf);
             //methodInfo.rebuildStackMap(classPool);
             method = null;
